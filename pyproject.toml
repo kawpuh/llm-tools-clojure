@@ -1,0 +1,29 @@
+[project]
+name = "llm-tools-simpleeval"
+version = "0.1"
+description = "Make simple_eval available as an LLM tool"
+readme = "README.md"
+authors = [{name = "Simon Willison"}]
+license = "Apache-2.0"
+classifiers = []
+requires-python = ">=3.9"
+dependencies = [
+    "llm",
+    "simpleeval"
+]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project.urls]
+Homepage = "https://github.com/simonw/llm-tools-simpleeval"
+Changelog = "https://github.com/simonw/llm-tools-simpleeval/releases"
+Issues = "https://github.com/simonw/llm-tools-simpleeval/issues"
+CI = "https://github.com/simonw/llm-tools-simpleeval/actions"
+
+[project.entry-points.llm]
+tools_simpleeval = "llm_tools_simpleeval"
+
+[project.optional-dependencies]
+test = ["pytest"]
