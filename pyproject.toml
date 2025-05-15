@@ -1,6 +1,6 @@
 [project]
 name = "llm-tools-simpleeval"
-version = "0.1"
+version = "0.1.1"
 description = "Make simple_eval available as an LLM tool"
 readme = "README.md"
 authors = [{name = "Simon Willison"}]
