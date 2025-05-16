@@ -26,4 +26,4 @@ CI = "https://github.com/simonw/llm-tools-simpleeval/actions"
 tools_simpleeval = "llm_tools_simpleeval"
 
 [project.optional-dependencies]
-test = ["pytest"]
+test = ["pytest", "llm-echo>=0.3a1"]
