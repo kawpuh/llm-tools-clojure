@@ -110,7 +110,7 @@ class ClojureREPL(llm.Toolbox):
         except Exception as e:
             return f"Error getting namespace: {str(e)}"
 
-    def load_file(self, file_path: str) -> str:
+    def _load_file(self, file_path: str) -> str:
         """
         Load a Clojure file into the REPL.
 
@@ -145,7 +145,7 @@ class ClojureREPL(llm.Toolbox):
         code = f"(require '{namespace})"
         return self.eval_clojure(code)
 
-    def close_connection(self) -> str:
+    def _close_connection(self) -> str:
         """Close the nREPL connection."""
         try:
             if self._connection:
@@ -157,6 +157,106 @@ class ClojureREPL(llm.Toolbox):
                 return "No active connection to close"
         except Exception as e:
             return f"Error closing connection: {str(e)}"
+    def dir_namespace(self, namespace: str) -> str:
+        """
+        Print a sorted directory of public vars in a namespace.
+
+        Args:
+            namespace: The namespace to inspect
+
+        Returns:
+            Sorted list of public vars in the namespace
+        """
+        code = f"(dir {namespace})"
+        return self.eval_clojure(code)
+
+    def apropos(self, pattern: str) -> str:
+        """
+        Find all public definitions matching a pattern across all loaded namespaces.
+
+        Args:
+            pattern: String or regex pattern to search for
+
+        Returns:
+            Sequence of all public definitions matching the pattern
+        """
+        # Escape quotes in the pattern and wrap in quotes
+        escaped_pattern = pattern.replace('"', '\\"')
+        code = f'(apropos "{escaped_pattern}")'
+        return self.eval_clojure(code)
+
+    def source(self, symbol: str) -> str:
+        """
+        Print the source code for a given symbol.
+
+        Args:
+            symbol: The symbol to show source for (e.g., 'filter', 'map')
+
+        Returns:
+            Source code for the symbol if available
+        """
+        code = f"(source {symbol})"
+        return self.eval_clojure(code)
+
+    def find_doc(self, pattern: str) -> str:
+        """
+        Find documentation for symbols matching a pattern.
+
+        Args:
+            pattern: String or regex pattern to search for in documentation
+
+        Returns:
+            Documentation for symbols matching the pattern
+        """
+        escaped_pattern = pattern.replace('"', '\\"')
+        code = f'(find-doc "{escaped_pattern}")'
+        return self.eval_clojure(code)
+
+    def doc(self, symbol: str) -> str:
+        """
+        Print documentation for a symbol.
+
+        Args:
+            symbol: The symbol to show documentation for
+
+        Returns:
+            Documentation for the symbol
+        """
+        code = f"(doc {symbol})"
+        return self.eval_clojure(code)
+
+    def list_namespaces(self) -> str:
+        """
+        List all currently loaded namespaces.
+
+        Returns:
+            List of all loaded namespaces
+        """
+        code = "(sort (map str (all-ns)))"
+        return self.eval_clojure(code)
+
+    def inspect_var(self, var_name: str) -> str:
+        """
+        Get detailed information about a var including metadata.
+
+        Args:
+            var_name: The var to inspect (can be fully qualified)
+
+        Returns:
+            Detailed information about the var
+        """
+        code = f"(meta (var {var_name}))"
+        return self.eval_clojure(code)
+
+    def show_classpath(self) -> str:
+        """
+        Show the current classpath.
+
+        Returns:
+            Current Java classpath
+        """
+        code = "(System/getProperty \"java.class.path\")"
+        return self.eval_clojure(code)
 
 
 # Alternative functional approach using hookimpl
