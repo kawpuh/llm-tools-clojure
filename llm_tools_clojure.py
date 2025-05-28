@@ -29,7 +29,39 @@ class ClojureREPL(llm.Toolbox):
             self._connection.write({"op": "clone"})
             response = self._connection.read()
             self._session = response.get("new-session")
+
+            # Automatically require REPL utilities based on REPL type
+            self._setup_repl_environment()
+
         return self._connection
+
+    def _setup_repl_environment(self):
+        """Set up the REPL environment with necessary requires."""
+        try:
+            if self.repl_type == "cljs":
+                # For ClojureScript
+                require_code = "(require '[cljs.repl :refer :all])"
+            else:
+                # For Clojure
+                require_code = "(require '[clojure.repl :refer :all])"
+
+            # Execute the require statement
+            self._connection.write({
+                "op": "eval",
+                "code": require_code,
+                "session": self._session
+            })
+
+            # Read responses until done
+            while True:
+                response = self._connection.read()
+                if "status" in response and "done" in response["status"]:
+                    break
+
+        except Exception as e:
+            # Don't fail connection if require fails, just continue
+            # This allows the REPL to work even if the namespace isn't available
+            pass
 
     def _read_nrepl_port(self) -> str:
         """Read the nREPL port from the appropriate port file.
