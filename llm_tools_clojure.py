@@ -10,6 +10,16 @@ class ClojureREPL(llm.Toolbox):
     _connection = None
     _session = None
 
+    def __init__(self, repl_type: str = "clj"):
+        """Initialize the ClojureREPL toolbox.
+
+        Args:
+            repl_type: Type of REPL, either "clj" or "cljs". Defaults to "clj".
+        """
+        if repl_type not in ["clj", "cljs"]:
+            raise ValueError("repl_type must be either 'clj' or 'cljs'")
+        self.repl_type = repl_type
+
     def _get_connection(self):
         """Establish connection to nREPL server if not already connected."""
         if self._connection is None:
@@ -22,13 +32,44 @@ class ClojureREPL(llm.Toolbox):
         return self._connection
 
     def _read_nrepl_port(self) -> str:
-        """Read the nREPL port from .nrepl-port file."""
-        try:
-            with open(".nrepl-port", "r") as f:
-                port = f.read().strip().rstrip('%')
-                return port
-        except FileNotFoundError:
-            raise Exception("No .nrepl-port file found. Make sure your Clojure REPL is running.")
+        """Read the nREPL port from the appropriate port file.
+
+        Searches current directory and parent directories for:
+        - .nrepl-port (for clj)
+        - .shadow-cljs/nrepl.port (for cljs)
+        """
+        if self.repl_type == "cljs":
+            port_file = ".shadow-cljs/nrepl.port"
+        else:
+            port_file = ".nrepl-port"
+
+        # Start from current directory and search upwards
+        current_dir = os.getcwd()
+
+        while True:
+            port_path = os.path.join(current_dir, port_file)
+
+            if os.path.exists(port_path):
+                try:
+                    with open(port_path, "r") as f:
+                        port = f.read().strip().rstrip('%')
+                        return port
+                except Exception as e:
+                    raise Exception(f"Error reading port file {port_path}: {e}")
+
+            # Move to parent directory
+            parent_dir = os.path.dirname(current_dir)
+
+            # If we've reached the root directory, stop searching
+            if parent_dir == current_dir:
+                break
+            current_dir = parent_dir
+
+        repl_name = "ClojureScript" if self.repl_type == "cljs" else "Clojure"
+        raise Exception(
+            f"No {port_file} file found in current directory or any parent directories. "
+            f"Make sure your {repl_name} REPL is running."
+        )
 
     def eval_clojure(self, code: str) -> str:
         """

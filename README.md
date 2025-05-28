@@ -2,33 +2,19 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/llm-tools-simpleeval/blob/main/LICENSE)
 
-Make simple_eval available as an LLM tool
+Talk to clojure nREPL as an LLM tool
 
 ## Installation
 
 Install this plugin in the same environment as [LLM](https://llm.datasette.io/).
+### Local Install
+Clone this git repo then run the following
 ```bash
-llm install llm-tools-simpleeval
+cd llm-tools-clojure
+llm install -e .
 ```
 ## Usage
-
+From a directory with a running nrepl instance and .nrepl-port file.
 ```bash
-llm -T simple_eval "4444 * 233423" --td
-```
-
-## Development
-
-To set up this plugin locally, first checkout the code. Then create a new virtual environment:
-```bash
-cd llm-tools-simpleeval
-python -m venv venv
-source venv/bin/activate
-```
-Now install the dependencies and test dependencies:
-```bash
-python -m pip install -e '.[test]'
-```
-To run the tests:
-```bash
-python -m pytest
+llm -T ClojureREPL "What functions are there for dealing with the database?" --td
 ```
