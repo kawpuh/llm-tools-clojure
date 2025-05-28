@@ -1,15 +1,15 @@
 [project]
-name = "llm-tools-simpleeval"
-version = "0.1.1"
-description = "Make simple_eval available as an LLM tool"
+name = "llm-tools-clojure"
+version = "0.0.1"
+description = "Talk to clojure nrepl as an LLM tool"
 readme = "README.md"
-authors = [{name = "Simon Willison"}]
+authors = [{name = "Kawpuh"}]
 license = "Apache-2.0"
 classifiers = []
 requires-python = ">=3.9"
 dependencies = [
     "llm",
-    "simpleeval"
+    "nrepl-python-client"
 ]
 
 [build-system]
@@ -17,13 +17,10 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project.urls]
-Homepage = "https://github.com/simonw/llm-tools-simpleeval"
-Changelog = "https://github.com/simonw/llm-tools-simpleeval/releases"
-Issues = "https://github.com/simonw/llm-tools-simpleeval/issues"
-CI = "https://github.com/simonw/llm-tools-simpleeval/actions"
+Homepage = "https://github.com/kawpuh/llm-tools-clojure"
 
 [project.entry-points.llm]
-tools_simpleeval = "llm_tools_simpleeval"
+tools_clojure = "llm_tools_clojure"
 
 [project.optional-dependencies]
 test = ["pytest", "llm-echo>=0.3a1"]
