@@ -14,5 +14,5 @@ llm install -e .
 ## Usage
 From a directory with a running nrepl instance and .nrepl-port file.
 ```bash
-ls -R src/clj | llm -T ClojureREPL --td --cl 0 "What functions are there for dealing with the database?" --td
+ls -R src/clj | llm -T ClojureREPL --td --cl 0 "What functions are there for dealing with the database?"
 ```
