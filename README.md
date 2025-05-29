@@ -1,6 +1,4 @@
-# llm-tools-simpleeval
-
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/simonw/llm-tools-simpleeval/blob/main/LICENSE)
+# llm-tools-clojure
 
 Talk to clojure nREPL as an LLM tool
 
