@@ -208,6 +208,7 @@ class ClojureREPL(llm.Toolbox):
     def require_namespace(self, namespace: str) -> str:
         """
         Require a namespace in the REPL.
+        IN MOST CASES YOU WILL WANT TO START HERE.
 
         Args:
             namespace: The namespace to require

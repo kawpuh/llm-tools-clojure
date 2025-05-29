@@ -1,6 +1,6 @@
 [project]
 name = "llm-tools-clojure"
-version = "0.0.3"
+version = "0.0.4"
 description = "Talk to clojure nrepl as an LLM tool"
 readme = "README.md"
 authors = [{name = "Kawpuh"}]
